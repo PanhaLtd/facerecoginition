@@ -1,89 +1,106 @@
-import 'dart:io';
-import 'package:face_recognition/person.dart';
+import 'package:face_recognition/AttendanceList.dart';
+import 'package:face_recognition/Register.dart';
+import 'package:face_recognition/ScanFace.dart';
+import 'package:face_recognition/StudentList.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
-void main() => runApp(const MaterialApp(
-  home: Home()
-));
-
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
+void main() {
+  runApp(const MyApp());
 }
 
-class _HomeState extends State<Home> {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  int count = 0;
-  ImagePicker picker = ImagePicker();
-  XFile? image;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
 
-  Person person = new Person("ឡុង បញ្ញា", "Long Panha", "ប្រុស", "2000-03-07", "ស្រុកខ្សាច់កណ្តាល ខេត្តកណ្តាល", "ខណ្ឌសែនសុខ ភ្នំពេញ", "098-989-898");
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Face Recognition'),
-        centerTitle: true,
-        backgroundColor: Colors.blue[600],
-        elevation: 0,
+        title: const Text('ប្រព័ន្ធគ្រប់គ្រងវត្តមានសិស្ស'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: EdgeInsets.all(10.0),
-            height: 250.0,
-            child: image == null ? Container() : Image.file(File(image!.path)),
-          ),
-          ElevatedButton(
-              onPressed: () async {
-                image = await picker.pickImage(source: ImageSource.camera);
-                setState(() {
-                  //update UI
-                });
+      body: Center(
+        child: GridView.count(
+          crossAxisCount: 2,
+          children: <Widget>[
+            HomeButton(
+              name: 'យកវត្តមាន',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ScanFaceScreen()),
+                );
               },
-              child: Text("ថតរូប")
-          ),
-          Container(
-            padding: EdgeInsets.all(20.0),
-            child: Text('ព័ត៌មាន:'),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Text('ឈ្មោះ៖ ${person.name}'),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Text('ឈ្មោះឡាតាំង៖ ${person.englishName}'),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Text('ភេទ៖៖ ${person.gender}'),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Text('ថ្ងៃខែឆ្នាំកំណើត៖ ${person.dob}'),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Text('ទីកន្លែងកំណើត៖ ${person.pob}'),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Text('អាស័យដ្ឋាន៖ ${person.address}'),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Text('លេខទូរស័ព្ទ៖ ${person.phone}'),
-          )
-        ],
+            ),
+            HomeButton(
+              name: 'បញ្ចូលទិន្នន័យ',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Register()),
+                );
+              },
+            ),
+            HomeButton(
+              name: 'បញ្ជីឈ្មោះសិស្ស',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const StudentList()),
+                );
+              },
+            ),
+            HomeButton(
+              name: 'បញ្ជីវត្តមាន',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AttendanceList()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
+class HomeButton extends StatelessWidget {
+  final String name;
+  final void Function() onPressed;
+
+  const HomeButton({super.key, required this.name, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        color: Colors.blue,
+        child: Center(
+          child: Text(
+            name,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
