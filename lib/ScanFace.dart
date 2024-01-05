@@ -20,9 +20,9 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
   XFile? image;
   late File file;
 
-  Student? person;
+  Student? student;
 
-  Future<void> _uploadFile() async {
+  Future<void> _uploadFile(BuildContext context) async {
     if (this.image == null) {
       return;
     }
@@ -51,10 +51,26 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
       String responseBody = await response.stream.bytesToString();
       Map<String, dynamic> jsonResponse = json.decode(responseBody);
       setState(() {
-        person = Student.fromJson(jsonResponse);
+        student = Student.fromJson(jsonResponse);
       });
     } else {
-      // File upload failed, show an error message.
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Model training is processing in background!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -96,8 +112,8 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
           ElevatedButton(
               onPressed: () async {
                 image = await picker.pickImage(source: ImageSource.camera);
-                person = null;
-                _uploadFile();
+                student = null;
+                _uploadFile(context);
                 setState(() {
                   //update UI
                 });
@@ -107,8 +123,8 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
           ElevatedButton(
               onPressed: () async {
                 image = await picker.pickImage(source: ImageSource.gallery);
-                person = null;
-                _uploadFile();
+                student = null;
+                _uploadFile(context);
                 setState(() {
                   //update UI
                 });
@@ -117,35 +133,35 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
           ),
           Container(
             padding: const EdgeInsets.all(20.0),
-            child: person == null ? const Text('') : const Text('ព័ត៌មាន:', style: TextStyle(fontSize: 20)),
+            child: student == null ? const Text('') : const Text('ព័ត៌មាន:', style: TextStyle(fontSize: 20)),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: person == null ? const Text('') : Text('ឈ្មោះ៖ ${person!.name}'),
+            child: student == null ? const Text('') : Text('ឈ្មោះ៖ ${student!.name}'),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: person == null ? const Text('') : Text('ឈ្មោះឡាតាំង៖ ${person!.englishName}'),
+            child: student == null ? const Text('') : Text('ឈ្មោះឡាតាំង៖ ${student!.englishName}'),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: person == null ? const Text('') : Text('ភេទ៖ ${person!.gender}'),
+            child: student == null ? const Text('') : Text('ភេទ៖ ${student!.gender}'),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: person == null ? const Text('') : Text('ថ្ងៃខែឆ្នាំកំណើត៖ ${person!.dob}'),
+            child: student == null ? const Text('') : Text('ថ្ងៃខែឆ្នាំកំណើត៖ ${student!.dob}'),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: person == null ? const Text('') : Text('ទីកន្លែងកំណើត៖ ${person!.pob}'),
+            child: student == null ? const Text('') : Text('ទីកន្លែងកំណើត៖ ${student!.pob}'),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: person == null ? const Text('') : Text('អាស័យដ្ឋាន៖ ${person!.address}'),
+            child: student == null ? const Text('') : Text('អាស័យដ្ឋាន៖ ${student!.address}'),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: person == null ? const Text('') : Text('លេខទូរស័ព្ទ៖ ${person!.phone}'),
+            child: student == null ? const Text('') : Text('លេខទូរស័ព្ទ៖ ${student!.phone}'),
           )
         ],
       ),
