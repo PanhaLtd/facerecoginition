@@ -29,7 +29,7 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
     // Create a multipart request for uploading the file
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://114.29.238.64:8000/students/predict'),
+      Uri.parse('http://103.195.7.153:8000/students/predict'),
     );
 
     final image = this.image;
@@ -58,8 +58,8 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Success'),
-            content: const Text('Model training is processing in background!'),
+            title: const Text('No Found'),
+            content: const Text('មិនស្គាល់'),
             actions: [
               TextButton(
                 onPressed: () {

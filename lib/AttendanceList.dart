@@ -23,7 +23,7 @@ class _AttendanceListState extends State<AttendanceList> {
   Future<void> fetchData() async {
     try {
       var response = await http.get(
-        Uri.parse('http://114.29.238.64:8000/students/attendance'),
+        Uri.parse('http://103.195.7.153:8000/students/attendance'),
       );
 
       if (response.statusCode == 200) {

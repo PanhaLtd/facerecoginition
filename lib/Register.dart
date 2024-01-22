@@ -33,7 +33,7 @@ class _AddNewStudentScreenState extends State<Register> {
     });
     await _uploadFile();
     await _uploadProfile();
-    final url = Uri.parse('http://114.29.238.64:8000/students/addNewStudent');
+    final url = Uri.parse('http://103.195.7.153:8000/students/addNewStudent');
 
     Map<String, dynamic> requestData = {
       "student": {
@@ -115,7 +115,7 @@ class _AddNewStudentScreenState extends State<Register> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://114.29.238.64:8000/students/addStudentVideo?student_id=$id&student_name=$name'),
+      Uri.parse('http://103.195.7.153:8000/students/addStudentVideo?student_id=$id&student_name=$name'),
     );
 
     request.files.add(
@@ -138,7 +138,7 @@ class _AddNewStudentScreenState extends State<Register> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://114.29.238.64:8000/students/upload'),
+      Uri.parse('http://103.195.7.153:8000/students/upload'),
     );
 
 
@@ -173,7 +173,7 @@ class _AddNewStudentScreenState extends State<Register> {
   Future<void> train(BuildContext context) async {
     try {
       var response = await http.get(
-        Uri.parse('http://114.29.238.64:8000/students/train'),
+        Uri.parse('http://103.195.7.153:8000/students/train'),
       );
 
       if (response.statusCode == 200) {
