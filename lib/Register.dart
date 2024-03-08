@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -29,7 +29,7 @@ class _AddNewStudentScreenState extends State<Register> {
 
   Future<void> sendData() async {
     setState(() {
-      isLoading = true; // Show the loading modal
+      isLoading = true;
     });
     await _uploadFile();
     await _uploadProfile();
@@ -55,10 +55,9 @@ class _AddNewStudentScreenState extends State<Register> {
       headers: {'Content-Type': 'application/json'},
     );
 
-    // Handle response
     if (response.statusCode == 200) {
       setState(() {
-        isLoading = false; // Hide the loading modal
+        isLoading = false;
         idController.clear();
         nameController.clear();
         dobController.clear();
@@ -70,7 +69,6 @@ class _AddNewStudentScreenState extends State<Register> {
         videoPath = '';
       });
     } else {
-      // Request failed
       print('Failed to send data. Error: ${response.statusCode}');
     }
   }
@@ -86,7 +84,6 @@ class _AddNewStudentScreenState extends State<Register> {
         _selectedFile = file;
       });
     } else {
-      // User canceled the file selection.
     }
   }
 
@@ -101,7 +98,6 @@ class _AddNewStudentScreenState extends State<Register> {
         _selectedImage = image;
       });
     } else {
-      // User canceled the image selection.
     }
   }
 
@@ -115,7 +111,8 @@ class _AddNewStudentScreenState extends State<Register> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://103.195.7.153:8000/students/addStudentVideo?student_id=$id&student_name=$name'),
+      Uri.parse(
+          'http://103.195.7.153:8000/students/addStudentVideo?student_id=$id&student_name=$name'),
     );
 
     request.files.add(
@@ -129,8 +126,6 @@ class _AddNewStudentScreenState extends State<Register> {
     await request.send();
   }
 
-
-
   Future<void> _uploadProfile() async {
     if (_selectedImage == null) {
       return;
@@ -140,7 +135,6 @@ class _AddNewStudentScreenState extends State<Register> {
       'POST',
       Uri.parse('http://103.195.7.153:8000/students/upload'),
     );
-
 
     request.files.add(
       await http.MultipartFile.fromPath(
@@ -166,7 +160,6 @@ class _AddNewStudentScreenState extends State<Register> {
         imagePath = responseBody['image_url'];
       });
     } else {
-      // File upload failed, show an error message.
     }
   }
 
@@ -182,11 +175,12 @@ class _AddNewStudentScreenState extends State<Register> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text('Success'),
-              content: const Text('Model training is processing in background!'),
+              content:
+                  const Text('Model training is processing in background!'),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.of(context).pop();
                   },
                   child: const Text('OK'),
                 ),
@@ -204,93 +198,150 @@ class _AddNewStudentScreenState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFDADADA),
       appBar: AppBar(
-        title: const Text('បញ្ចូលទិន្នន័យ'),
+        iconTheme: const IconThemeData(
+          color: Color(0xFF0E0E5A),
+        ),
+        backgroundColor: Colors.white,
+        title: Text('បញ្ចូលទិន្នន័យ',
+            style: GoogleFonts.khmer(
+                color: const Color(0xFF0E0E5A), fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: idController,
-                decoration: const InputDecoration(labelText: 'លេខសម្គាល់'),
-              ),
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'ឈ្មោះ'),
-              ),
-              TextField(
-                controller: englishNameController,
-                decoration: const InputDecoration(labelText: 'ឈ្មោះឡាតាំង'),
-              ),
-              Row(
-                children: [
-                  const Text('ភេទ:'),
-                  Radio(
-                    value: 'ប្រុស',
-                    groupValue: genderController.text,
-                    onChanged: (value) {
-                      setState(() {
-                        genderController.text = value!;
-                      });
-                    },
+          padding: const EdgeInsets.all(10.0),
+          child: Container(
+            padding: const EdgeInsets.all(14.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: Colors.white
+            ),
+            child: Column(
+              children: [
+                TextField(
+                  controller: idController,
+                  decoration: const InputDecoration(labelText: 'លេខសម្គាល់', labelStyle: TextStyle(fontSize: 18)),
+                ),
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'ឈ្មោះ', labelStyle: TextStyle(fontSize: 18)),
+                ),
+                TextField(
+                  controller: englishNameController,
+                  decoration: const InputDecoration(labelText: 'ឈ្មោះឡាតាំង', labelStyle: TextStyle(fontSize: 18)),
+                ),
+                Row(
+                  children: [
+                    const Text('ភេទ:', style: TextStyle(fontSize: 18)),
+                    Radio(
+                      value: 'ប្រុស',
+                      groupValue: genderController.text,
+                      onChanged: (value) {
+                        setState(() {
+                          genderController.text = value!;
+                        });
+                      },
+                    ),
+                    const Text('ប្រុស', style: TextStyle(fontSize: 18)),
+                    Radio(
+                      value: 'ស្រី',
+                      groupValue: genderController.text,
+                      onChanged: (value) {
+                        setState(() {
+                          genderController.text = value!;
+                        });
+                      },
+                    ),
+                    const Text('ស្រី', style: TextStyle(fontSize: 18)),
+                  ],
+                ),
+                TextField(
+                  controller: dobController,
+                  decoration:
+                  const InputDecoration(labelText: 'ថ្ងៃខែឆ្នាំកំណើត', labelStyle: TextStyle(fontSize: 18)),
+                ),
+                TextField(
+                  controller: placeOfBirthController,
+                  decoration: const InputDecoration(labelText: 'ទីកន្លែងកំណើត', labelStyle: TextStyle(fontSize: 18)),
+                ),
+                TextField(
+                  controller: addressController,
+                  decoration: const InputDecoration(labelText: 'អាស័យដ្ឋាន', labelStyle: TextStyle(fontSize: 18)),
+                ),
+                TextField(
+                  controller: phoneController,
+                  decoration: const InputDecoration(labelText: 'លេខទូរស័ព្ទ', labelStyle: TextStyle(fontSize: 18)),
+                ),
+                Container(
+                  width: 200.0,
+                  margin: const EdgeInsets.only(top: 25),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  const Text('ប្រុស'),
-                  Radio(
-                    value: 'ស្រី',
-                    groupValue: genderController.text,
-                    onChanged: (value) {
-                      setState(() {
-                        genderController.text = value!;
-                      });
-                    },
+                  child: ElevatedButton.icon(
+                    onPressed: _selectImage,
+                    icon: const Icon(Icons.image, color: Color(0xFF0E0E5A),),
+                    label: Text('ជ្រើសរើសរូប', style: GoogleFonts.khmer(
+                      color: const Color(0xFF0E0E5A),
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w500,
+                    )),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFDADADA),
+                    ),
                   ),
-                  const Text('ស្រី'),
-                ],
-              ),
-              TextField(
-                controller: dobController,
-                decoration: const InputDecoration(labelText: 'ថ្ងៃខែឆ្នាំកំណើត'),
-              ),
-              TextField(
-                controller: placeOfBirthController,
-                decoration: const InputDecoration(labelText: 'ទីកន្លែងកំណើត'),
-              ),
-              TextField(
-                controller: addressController,
-                decoration: const InputDecoration(labelText: 'អាស័យដ្ឋាន'),
-              ),
-              TextField(
-                controller: phoneController,
-                decoration: const InputDecoration(labelText: 'លេខទូរស័ព្ទ'),
-              ),
-              ElevatedButton.icon(
-                onPressed: _selectImage,
-                icon: const Icon(Icons.image),
-                label: const Text('Select Image'),
-              ),
-              ElevatedButton.icon(
-                onPressed: _selectFile,
-                icon: const Icon(Icons.videocam),
-                label: const Text('Take Video'),
-              ),
-              ElevatedButton(
-                onPressed: isLoading ? null : sendData,
-                child: isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Submit'),
-              ),
-            ],
+                ),
+                Container(
+                  width: 200.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: ElevatedButton.icon(
+                    onPressed: _selectFile,
+                    icon: const Icon(Icons.videocam, color: const Color(0xFF0E0E5A),),
+                    label: Text('ជ្រើសរើសវីដេអូ', style: GoogleFonts.khmer(
+                      color: const Color(0xFF0E0E5A),
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w500,
+                    )),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFDADADA),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 120.0,
+                  height: 40,
+                  margin: const EdgeInsets.only(top: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: isLoading ? null : sendData,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF0E0E5A),
+                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : Text('បញ្ចូន', style:  GoogleFonts.khmer(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                    )),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Call fetchData with the current context
           train(context);
         },
-        child: const Text('Train'),
+        backgroundColor: const Color(0xFF0E0E5A),
+        child: const Text('Train', style: TextStyle(fontSize: 16, color: Colors.white),),
       ),
     );
   }

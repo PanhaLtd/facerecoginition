@@ -21,7 +21,6 @@ class Student {
     required this.imagePath,
   });
 
-  // Factory method to create a Person object from a Map
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
       id: json['result']['id'],

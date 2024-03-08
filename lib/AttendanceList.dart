@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:face_recognition/Attendance.dart'; // Assuming you have a Person class defined
+import 'package:face_recognition/Attendance.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({Key? key}) : super(key: key);
@@ -53,8 +54,17 @@ class _AttendanceListState extends State<AttendanceList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFDADADA),
       appBar: AppBar(
-        title: const Text('បញ្ជីវត្តមាន'),
+        iconTheme: const IconThemeData(
+          color: Color(0xFF0E0E5A), //change your color here
+        ),
+        backgroundColor: Colors.white,
+        title: Text('បញ្ជីវត្តមាន',
+            style: GoogleFonts.khmer(
+                color: const Color(0xFF0E0E5A),
+                fontWeight: FontWeight.bold
+            )),
       ),
       body: attendances.isNotEmpty
           ? AttendanceListScreen(attendances: attendances)

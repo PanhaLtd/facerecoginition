@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:google_fonts/google_fonts.dart';
 import 'package:face_recognition/Student.dart';
 
 class ScanFaceScreen extends StatefulWidget {
@@ -14,7 +15,6 @@ class ScanFaceScreen extends StatefulWidget {
 }
 
 class _ScanFaceScreenState extends State<ScanFaceScreen> {
-
   int count = 0;
   ImagePicker picker = ImagePicker();
   XFile? image;
@@ -26,7 +26,6 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
     if (this.image == null) {
       return;
     }
-    // Create a multipart request for uploading the file
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('http://103.195.7.153:8000/students/predict'),
@@ -45,7 +44,6 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
       ),
     );
 
-    // Send the request
     var response = await request.send();
     if (response.statusCode == 200) {
       String responseBody = await response.stream.bytesToString();
@@ -63,7 +61,7 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                 },
                 child: const Text('OK'),
               ),
@@ -77,10 +75,15 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFDADADA),
       appBar: AppBar(
-        title: const Text('យកវត្តមាន'),
-        backgroundColor: Colors.blue[600],
-        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Color(0xFF0E0E5A), //change your color here
+        ),
+        backgroundColor: Colors.white,
+        title: Text('យកវត្តមាន',
+            style: GoogleFonts.khmer(
+                color: const Color(0xFF0E0E5A), fontWeight: FontWeight.bold)),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -91,19 +94,17 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Placeholder image
                 Image.asset(
                   'assets/place_holder.jpg',
-                  width: 250.0, // Adjust the width as needed
-                  height: 250.0, // Adjust the height as needed
+                  width: 250.0,
+                  height: 250.0,
                   fit: BoxFit.cover,
                 ),
-                // Actual image if available
                 if (image != null)
                   Image.file(
                     File(image!.path),
-                    width: 250.0, // Adjust the width as needed
-                    height: 250.0, // Adjust the height as needed
+                    width: 250.0,
+                    height: 250.0,
                     fit: BoxFit.cover,
                   ),
               ],
@@ -118,8 +119,11 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
                   //update UI
                 });
               },
-              child: const Text("ថតរូប")
-          ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white, // Set the background color to white
+                onPrimary: Color(0xFF0E0E5A), // Set the text color
+              ),
+              child: Text("ថតរូប", style: GoogleFonts.khmer(fontSize: 18.0, color: Color(0xFF0E0E5A)))),
           ElevatedButton(
               onPressed: () async {
                 image = await picker.pickImage(source: ImageSource.gallery);
@@ -129,39 +133,65 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
                   //update UI
                 });
               },
-              child: const Text("ជ្រើសរើសរូប")
-          ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.white, // Set the background color to white
+                onPrimary: Color(0xFF0E0E5A), // Set the text color
+              ),
+              child: Text("ជ្រើសរើសរូប", style: GoogleFonts.khmer(fontSize: 18.0, color: Color(0xFF0E0E5A)))),
           Container(
             padding: const EdgeInsets.all(20.0),
-            child: student == null ? const Text('') : const Text('ព័ត៌មាន:', style: TextStyle(fontSize: 20)),
+            child: student == null
+                ? const Text('')
+                : const Text('ព័ត៌មាន:', style: TextStyle(fontSize: 20)),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: student == null ? const Text('') : Text('ឈ្មោះ៖ ${student!.name}'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            child: student == null
+                ? const Text('')
+                : Text('ឈ្មោះ៖ ${student!.name}', style: TextStyle(fontSize: 18.0)),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: student == null ? const Text('') : Text('ឈ្មោះឡាតាំង៖ ${student!.englishName}'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            child: student == null
+                ? const Text('')
+                : Text('ឈ្មោះឡាតាំង៖ ${student!.englishName}', style: TextStyle(fontSize: 18.0),),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: student == null ? const Text('') : Text('ភេទ៖ ${student!.gender}'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            child: student == null
+                ? const Text('')
+                : Text('ភេទ៖ ${student!.gender}', style: TextStyle(fontSize: 18.0)),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: student == null ? const Text('') : Text('ថ្ងៃខែឆ្នាំកំណើត៖ ${student!.dob}'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            child: student == null
+                ? const Text('')
+                : Text('ថ្ងៃខែឆ្នាំកំណើត៖ ${student!.dob}', style: TextStyle(fontSize: 18.0)),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: student == null ? const Text('') : Text('ទីកន្លែងកំណើត៖ ${student!.pob}'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            child: student == null
+                ? const Text('')
+                : Text('ទីកន្លែងកំណើត៖ ${student!.pob}', style: TextStyle(fontSize: 18.0)),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: student == null ? const Text('') : Text('អាស័យដ្ឋាន៖ ${student!.address}'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            child: student == null
+                ? const Text('')
+                : Text('អាស័យដ្ឋាន៖ ${student!.address}', style: TextStyle(fontSize: 18.0)),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: student == null ? const Text('') : Text('លេខទូរស័ព្ទ៖ ${student!.phone}'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            child: student == null
+                ? const Text('')
+                : Text('លេខទូរស័ព្ទ៖ ${student!.phone}', style: TextStyle(fontSize: 18.0)),
           )
         ],
       ),
