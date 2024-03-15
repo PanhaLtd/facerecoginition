@@ -24,7 +24,7 @@ class _StudentListState extends State<StudentList> {
   Future<void> fetchData() async {
     try {
       var response = await http.get(
-        Uri.parse('http://103.195.7.153:8000/students'),
+        Uri.parse('http://185.229.225.221:8000/students'),
       );
 
       if (response.statusCode == 200) {
@@ -149,7 +149,7 @@ class StudentDetailScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(105.0),
                   child: CachedNetworkImage(
-                    imageUrl: 'http://103.195.7.153:8000/students/images/${student.imagePath}',
+                    imageUrl: 'http://185.229.225.221:8000/students/images/${student.imagePath}',
                     errorWidget: (context, url, error) => const Icon(Icons.error),
                     fit: BoxFit.cover,
                     height: 210.0,

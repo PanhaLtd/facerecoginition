@@ -28,7 +28,7 @@ class _ScanFaceScreenState extends State<ScanFaceScreen> {
     }
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://103.195.7.153:8000/students/predict'),
+      Uri.parse('http://185.229.225.221:8000/students/predict'),
     );
 
     final image = this.image;
